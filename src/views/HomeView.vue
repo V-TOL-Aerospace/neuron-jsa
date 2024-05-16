@@ -1,38 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import TheWelcome from '../components/TheWelcome.vue'
+// import TheWelcome from '../components/TheWelcome.vue'
+import { checklist } from '../libraries/checklist'
 
-const items = ref([
-  {
-    id: self.crypto.randomUUID(),
-    question:
-      'Check the task location on any of the CASA-approved apps - the information on these apps can be relied on absolutely.',
-    options: [
-      'AALTI',
-      'Aerologix',
-      'AEROphoria',
-      'RPA Manager',
-      'Curo by Sphere Drones',
-      'FlyFreely',
-      'Fly.Yobe',
-      'ok2fly',
-      'OpenSky',
-      'ScaleFlyt',
-      'SmartSkies'
-    ],
-    comments: false
-  },
-  {
-    id: self.crypto.randomUUID(),
-    question: 'Are there any issues with flying in this area?',
-    comments: true
-  }
-])
+const checks = ref(checklist)
 </script>
 
 <template>
   <main>
-    <div class="check" v-for="(item, index) in items" :key="item.id">
+    <div class="check" v-for="(item, index) in checks" :key="item.id">
       {{ index + 1 }}: {{ item.question }}
       <div v-if="item.options">
         <div v-for="option in item.options" :key="option">
