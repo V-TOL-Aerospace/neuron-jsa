@@ -7,7 +7,7 @@ import HomeView from './views/HomeView.vue'
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" />
-    <div class="wrapper">Neuron JSA</div>
+    <div class="wrapper"><div>Neuron JSA</div></div>
 
     <!-- <div class="wrapper">
       <HelloWorld msg="You did it!" />
@@ -25,16 +25,30 @@ import HomeView from './views/HomeView.vue'
 
 <style scoped>
 header {
-  line-height: 1.5;
   max-height: 5em;
   background-color: var(--color-background-soft);
-  padding: 0.5rem;
+  padding: 1rex;
+  gap: 1rex;
+  display: flex;
 }
 
 .logo {
   display: block;
-  margin: 0 auto 2rem;
-  height: 1em;
+  margin: 0;
+  height: 2em;
+}
+
+.wrapper {
+  display: flex;
+  /* place-items: flex-start;
+  flex-wrap: wrap; */
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.wrapper > * {
+  flex: auto;
+  font-weight: bold;
 }
 
 nav {
@@ -63,21 +77,15 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+  /* header { */
+  /* display: flex; */
+  /* place-items: center; */
+  /* padding-right: calc(var(--section-gap) / 2); */
+  /* } */
 
-  .logo {
+  /* .logo {
     margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+  } */
 
   nav {
     text-align: left;

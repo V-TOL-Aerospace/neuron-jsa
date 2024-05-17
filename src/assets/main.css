@@ -27,6 +27,30 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+input,
+select,
+textarea {
+  color: var(--color-text);
+  background: var(--color-background);
+  border-radius: 0.8ex;
+  padding: 1ex;
+  /* Match body fonts */
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 15px;
+}
+
 #app {
   /* max-width: 1280px; */
   margin: 0 auto;

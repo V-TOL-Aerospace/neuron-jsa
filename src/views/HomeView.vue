@@ -2,68 +2,63 @@
 import { ref } from 'vue'
 // import TheWelcome from '../components/TheWelcome.vue'
 import { checklist } from '../libraries/checklist'
+import CheckItem from '@/components/CheckItem.vue'
 
 const checks = ref(checklist)
 </script>
 
 <template>
-  <main>
-    <div class="check" v-for="(item, index) in checks" :key="item.id">
-      {{ index + 1 }}: {{ item.question }}
-      <div v-if="item.options">
-        <div v-for="option in item.options" :key="option">
-          <input
-            type="checkbox"
-            :key="option"
-            :id="option"
-            :name="`options-${item.id}`"
-            :value="option"
-          />
-          <label :for="`options-${item.id}`">{{ option }}</label>
-        </div>
-      </div>
-      <div v-else>
-        <input
-          type="radio"
-          :id="`select-${item.id}-yes`"
-          :name="`select-${item.id}`"
-          value="true"
-        />
-        <label :for="`select-${item.id}-yes`">Yes</label>
-        <input
-          type="radio"
-          :id="`select-${item.id}-no`"
-          :name="`select-${item.id}`"
-          value="true"
-          checked="true"
-        />
-        <label :for="`select-${item.id}-no`">No</label>
-      </div>
-      <input
-        class="comments"
-        v-if="item.comments"
-        type="text"
-        :id="`comments-${item.id}`"
-        :name="`comments-${item.id}`"
-      /><br />
-      <div v-if="item.comments"></div>
+  <main class="list-layout">
+    <div class="list-layout list-section" v-for="section in checks" :key="section.title">
+      <h2>{{ section.title }}</h2>
+      <CheckItem
+        class="item"
+        v-for="(item, index) in section.checks"
+        :key="item.id"
+        :index="index"
+        :data="item"
+      />
     </div>
   </main>
 </template>
 
 <style scoped>
-.check {
-  margin: 1em;
-  padding: 0.5em;
-  border-radius: 0.5em;
-  max-width: 600px;
-  background-color: var(--color-background-soft);
+list-layout {
   display: flex;
+  /* flex-direction: row;
+  flex-wrap: wrap; */
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1ex;
 }
 
-.comments {
-  flex: auto;
-  min-height: 5em;
+.list-section {
+  width: 100%;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
 }
+
+.item {
+  margin: 1ex;
+  width: 100%;
+  max-width: 80em;
+}
+
+@media (orientation: portrait) {
+  main {
+    flex-direction: column;
+  }
+
+  .item {
+    max-width: 40em;
+  }
+}
+
+/*
+TODO:
+@media print {
+}
+*/
 </style>
