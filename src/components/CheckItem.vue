@@ -11,87 +11,75 @@ import CheckItemContentYesNo from '@/components/CheckItemContentYesNo.vue'
 import CheckItemContentSelection from './CheckItemContentSelection.vue'
 import CheckItemContentOptions from './CheckItemContentOptions.vue'
 import CheckItemContentTicker from './CheckItemContentTicker.vue'
-import { ref } from 'vue'
+import { nextTick, onUnmounted, ref } from 'vue'
 
 defineProps<{
   index: number
   data: Checks
 }>()
 
-defineEmits<{
-  (e: 'checked', value: boolean): void
+const emit = defineEmits<{
+  checked: [value: boolean]
+  removed: []
 }>()
 
 const checked = ref(false)
 const answered = ref(false)
+
+function check_answered(value: boolean) {
+  answered.value = value
+}
+
+function check_checked(value: boolean) {
+  checked.value = value
+  // Delay the emit by a tick to ensure "data-checked" will get set first
+  nextTick(() => {
+    emit('checked', checked.value)
+  })
+}
+
+onUnmounted(() => {
+  emit('removed')
+})
 </script>
 
 <template>
-  <div :class="['check', answered ? (checked ? 'answered-good' : 'answered-bad') : '']">
+  <div
+    :class="['check', answered ? (checked ? 'answered-good' : 'answered-bad') : '']"
+    :data-checked="checked"
+    :data-answered="answered"
+  >
     <div class="question-wrapper">
       <div class="check-title">Check {{ index + 1 }}</div>
       <div class="check-question">{{ data.question }}</div>
+      <a v-if="data.image" :href="data.image" target="_blank" class="check-image-wrapper"
+        ><img :src="data.image" class="check-image"
+      /></a>
     </div>
     <div class="answer-wrapper">
       <CheckItemContentOptions
         v-if="is_check_options(data)"
         :data="data"
-        @answered="
-          (value: boolean) => {
-            answered = value
-          }
-        "
-        @checked="
-          (value: boolean) => {
-            checked = value
-            $emit('checked', value)
-          }
-        "
+        @answered="check_answered"
+        @checked="check_checked"
       />
       <CheckItemContentSelection
         v-else-if="is_check_selection(data)"
         :data="data"
-        @answered="
-          (value: boolean) => {
-            answered = value
-          }
-        "
-        @checked="
-          (value: boolean) => {
-            checked = value
-            $emit('checked', value)
-          }
-        "
+        @answered="check_answered"
+        @checked="check_checked"
       />
       <CheckItemContentTicker
         v-else-if="is_check_number(data)"
         :data="data"
-        @answered="
-          (value: boolean) => {
-            answered = value
-          }
-        "
-        @checked="
-          (value: boolean) => {
-            checked = value
-            $emit('checked', value)
-          }
-        "
+        @answered="check_answered"
+        @checked="check_checked"
       />
       <CheckItemContentYesNo
         v-else-if="is_check_yes_no(data)"
         :data="data"
-        @answered="
-          (value: boolean) => {
-            answered = value
-          }
-        "
-        @checked="
-          (value: boolean) => {
-            checked = value
-            $emit('checked', value)
-          }
-        "
+        @answered="check_answered"
+        @checked="check_checked"
       />
     </div>
     <textarea
@@ -150,6 +138,16 @@ const answered = ref(false)
   background-color: var(--color-background-mute);
   border-radius: 1ex;
   padding: 1ex;
+}
+
+.check-image-wrapper {
+  max-height: 30em;
+  cursor: zoom-in;
+}
+.check-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .comments {

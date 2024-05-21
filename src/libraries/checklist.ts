@@ -86,7 +86,7 @@ export const legal_checklist: Checks[] = [
   {
     id: 'permission-required',
     question: 'Is CASA permission required?',
-    image: 'radio_flow.png',
+    image: '/media/radio_flow.png',
     show_if: {
       method: 'or',
       prerequisites: new Map([

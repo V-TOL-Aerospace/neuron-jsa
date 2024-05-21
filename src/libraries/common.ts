@@ -25,7 +25,6 @@ export interface CheckBase {
   image?: string
   show_if?: CheckPrerequisites
   comments?: boolean | string
-  checked?: boolean
 }
 
 export function is_check(o: any) {

@@ -6,8 +6,8 @@ defineProps<{
 }>()
 
 defineEmits<{
-  (e: 'checked', value: boolean): void
-  (e: 'answered', value: boolean): void
+  checked: [value: boolean]
+  answered: [value: boolean]
 }>()
 </script>
 
