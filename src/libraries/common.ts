@@ -12,19 +12,29 @@ export function is_array_of_strings(o: any) {
   return is_array(o, 'string')
 }
 
+export type CheckPrerequisitesMethod = 'and' | 'or'
+
+export interface CheckPrerequisites {
+  method: string
+  prerequisites: Map<string, boolean>
+}
+
 export interface CheckBase {
   id: string
   question: string
+  image?: string
+  show_if?: CheckPrerequisites
   comments?: boolean | string
+  checked?: boolean
 }
 
 export function is_check(o: any) {
   return typeof o.id === 'string' && typeof o.question === 'string'
 }
 
-export function check_has_custom_comment_text(o: CheckBase) {
-  return typeof o.comments === 'string'
-}
+// export function check_has_custom_comment_text(o: CheckBase) {
+//   return typeof o.comments === 'string'
+// }
 
 export interface CheckYesNo extends CheckBase {}
 

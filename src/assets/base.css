@@ -33,6 +33,9 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
+  --color-feedback-positive: rgba(60, 150, 60);
+  --color-feedback-positive: rgba(150, 60, 60);
+
   --section-gap: 160px;
 }
 
@@ -47,6 +50,9 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+
+    --color-feedback-positive: rgba(60, 100, 60);
+    --color-feedback-negative: rgba(100, 60, 60);
   }
 }
 

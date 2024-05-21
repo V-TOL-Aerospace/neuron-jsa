@@ -4,22 +4,30 @@ import {
   is_check_number,
   is_check_options,
   is_check_selection,
-  is_check_yes_no,
-  check_has_custom_comment_text
+  is_check_yes_no
+  // check_has_custom_comment_text
 } from '@/libraries/common'
 import CheckItemContentYesNo from '@/components/CheckItemContentYesNo.vue'
 import CheckItemContentSelection from './CheckItemContentSelection.vue'
 import CheckItemContentOptions from './CheckItemContentOptions.vue'
 import CheckItemContentTicker from './CheckItemContentTicker.vue'
+import { ref } from 'vue'
 
 defineProps<{
   index: number
   data: Checks
 }>()
+
+defineEmits<{
+  (e: 'checked', value: boolean): void
+}>()
+
+const checked = ref(false)
+const answered = ref(false)
 </script>
 
 <template>
-  <div class="check">
+  <div :class="['check', answered ? (checked ? 'answered-good' : 'answered-bad') : '']">
     <div class="question-wrapper">
       <div class="check-title">Check {{ index + 1 }}</div>
       <div class="check-question">{{ data.question }}</div>
@@ -28,15 +36,29 @@ defineProps<{
       <CheckItemContentOptions v-if="is_check_options(data)" :data="data" />
       <CheckItemContentSelection v-else-if="is_check_selection(data)" :data="data" />
       <CheckItemContentTicker v-else-if="is_check_number(data)" :data="data" />
-      <CheckItemContentYesNo v-else-if="is_check_yes_no(data)" :data="data" />
+      <CheckItemContentYesNo
+        v-else-if="is_check_yes_no(data)"
+        :data="data"
+        @answered="
+          (value: boolean) => {
+            answered = value
+          }
+        "
+        @checked="
+          (value: boolean) => {
+            checked = value
+            $emit('checked', value)
+          }
+        "
+      />
     </div>
     <textarea
       class="comments"
-      v-if="data.comments"
+      v-if="typeof data.comments === 'string' || Boolean(data.comments)"
       type="text"
       :id="`comments-${data.id}`"
       :name="`comments-${data.id}`"
-      :placeholder="check_has_custom_comment_text(data) ? data.comments : `Additional comments...`"
+      :placeholder="typeof data.comments === 'string' ? data.comments : `Additional comments...`"
       multiline="true"
     />
     <div v-if="data.comments"></div>
@@ -52,6 +74,14 @@ defineProps<{
   display: flex;
   flex-direction: row;
   /* align-items: center; */
+}
+
+.answered-good {
+  background-color: var(--color-feedback-positive);
+}
+
+.answered-bad {
+  background-color: var(--color-feedback-negative);
 }
 
 .question-wrapper {

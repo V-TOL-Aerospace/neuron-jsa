@@ -4,16 +4,47 @@ import type { CheckYesNo } from '@/libraries/common'
 defineProps<{
   data: CheckYesNo
 }>()
+
+defineEmits<{
+  (e: 'checked', value: boolean): void
+  (e: 'answered', value: boolean): void
+}>()
+
+function is_true(value: string) {
+  return value.toLowerCase() == 'true'
+}
 </script>
 
 <template>
   <div class="check-yes-no">
     <div>
-      <input type="radio" :id="`select-${data.id}-yes`" :name="`select-${data.id}`" value="true" />
+      <input
+        type="radio"
+        :id="`select-${data.id}-yes`"
+        :name="`select-${data.id}`"
+        value="true"
+        @input="
+          (event) => {
+            $emit('checked', is_true((event.currentTarget as HTMLInputElement).value))
+            $emit('answered', true)
+          }
+        "
+      />
       <label :for="`select-${data.id}-yes`">Yes</label>
     </div>
     <div>
-      <input type="radio" :id="`select-${data.id}-no`" :name="`select-${data.id}`" value="true" />
+      <input
+        type="radio"
+        :id="`select-${data.id}-no`"
+        :name="`select-${data.id}`"
+        value="false"
+        @input="
+          (event) => {
+            $emit('checked', is_true((event.currentTarget as HTMLInputElement).value))
+            $emit('answered', true)
+          }
+        "
+      />
       <label :for="`select-${data.id}-no`">No</label>
     </div>
   </div>
