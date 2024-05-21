@@ -4,6 +4,11 @@ import type { CheckOptions } from '@/libraries/common'
 defineProps<{
   data: CheckOptions
 }>()
+
+defineEmits<{
+  (e: 'checked', value: boolean): void
+  (e: 'answered', value: boolean): void
+}>()
 </script>
 
 <template>
@@ -15,6 +20,12 @@ defineProps<{
         :id="`options-${data.id}-${option}`"
         :name="`options-${data.id}`"
         :value="option"
+        @input="
+          (event) => {
+            $emit('checked', Boolean((event.currentTarget as HTMLInputElement).checked))
+            $emit('answered', Boolean((event.currentTarget as HTMLInputElement).checked))
+          }
+        "
       />
       <label :for="`options-${data.id}-${option}`">{{ option }}</label>
     </div>

@@ -33,9 +33,51 @@ const answered = ref(false)
       <div class="check-question">{{ data.question }}</div>
     </div>
     <div class="answer-wrapper">
-      <CheckItemContentOptions v-if="is_check_options(data)" :data="data" />
-      <CheckItemContentSelection v-else-if="is_check_selection(data)" :data="data" />
-      <CheckItemContentTicker v-else-if="is_check_number(data)" :data="data" />
+      <CheckItemContentOptions
+        v-if="is_check_options(data)"
+        :data="data"
+        @answered="
+          (value: boolean) => {
+            answered = value
+          }
+        "
+        @checked="
+          (value: boolean) => {
+            checked = value
+            $emit('checked', value)
+          }
+        "
+      />
+      <CheckItemContentSelection
+        v-else-if="is_check_selection(data)"
+        :data="data"
+        @answered="
+          (value: boolean) => {
+            answered = value
+          }
+        "
+        @checked="
+          (value: boolean) => {
+            checked = value
+            $emit('checked', value)
+          }
+        "
+      />
+      <CheckItemContentTicker
+        v-else-if="is_check_number(data)"
+        :data="data"
+        @answered="
+          (value: boolean) => {
+            answered = value
+          }
+        "
+        @checked="
+          (value: boolean) => {
+            checked = value
+            $emit('checked', value)
+          }
+        "
+      />
       <CheckItemContentYesNo
         v-else-if="is_check_yes_no(data)"
         :data="data"
