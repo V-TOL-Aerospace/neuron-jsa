@@ -45,42 +45,44 @@ onUnmounted(() => {
 
 <template>
   <div
-    :class="['check', answered ? (checked ? 'answered-good' : 'answered-bad') : '']"
+    :class="['check', answered ? 'answered' : '']"
     :data-checked="checked"
     :data-answered="answered"
   >
-    <div class="question-wrapper">
-      <div class="check-title">Check {{ index + 1 }}</div>
-      <div class="check-question">{{ data.question }}</div>
-      <a v-if="data.image" :href="data.image" target="_blank" class="check-image-wrapper"
-        ><img :src="data.image" class="check-image"
-      /></a>
-    </div>
-    <div class="answer-wrapper">
-      <CheckItemContentOptions
-        v-if="is_check_options(data)"
-        :data="data"
-        @answered="check_answered"
-        @checked="check_checked"
-      />
-      <CheckItemContentSelection
-        v-else-if="is_check_selection(data)"
-        :data="data"
-        @answered="check_answered"
-        @checked="check_checked"
-      />
-      <CheckItemContentTicker
-        v-else-if="is_check_number(data)"
-        :data="data"
-        @answered="check_answered"
-        @checked="check_checked"
-      />
-      <CheckItemContentYesNo
-        v-else-if="is_check_yes_no(data)"
-        :data="data"
-        @answered="check_answered"
-        @checked="check_checked"
-      />
+    <div class="check-title">Check {{ index + 1 }}</div>
+    <div class="check-content">
+      <div class="question-wrapper">
+        <div class="check-question">{{ data.question }}</div>
+        <a v-if="data.image" :href="data.image" target="_blank" class="check-image-wrapper"
+          ><img :src="data.image" class="check-image"
+        /></a>
+      </div>
+      <div class="answer-wrapper">
+        <CheckItemContentOptions
+          v-if="is_check_options(data)"
+          :data="data"
+          @answered="check_answered"
+          @checked="check_checked"
+        />
+        <CheckItemContentSelection
+          v-else-if="is_check_selection(data)"
+          :data="data"
+          @answered="check_answered"
+          @checked="check_checked"
+        />
+        <CheckItemContentTicker
+          v-else-if="is_check_number(data)"
+          :data="data"
+          @answered="check_answered"
+          @checked="check_checked"
+        />
+        <CheckItemContentYesNo
+          v-else-if="is_check_yes_no(data)"
+          :data="data"
+          @answered="check_answered"
+          @checked="check_checked"
+        />
+      </div>
     </div>
     <textarea
       class="comments"
@@ -91,27 +93,31 @@ onUnmounted(() => {
       :placeholder="typeof data.comments === 'string' ? data.comments : `Additional comments...`"
       multiline="true"
     />
-    <div v-if="data.comments"></div>
   </div>
 </template>
 
 <style scoped>
 .check {
   padding: 1ex;
-  border-radius: 2ex;
+  border-radius: 1ex;
   gap: 1ex;
   background-color: var(--color-background-soft);
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.check-content {
+  /* padding: 1ex; */
+  border-radius: 2ex;
+  gap: 1ex;
   display: flex;
   flex-direction: row;
   /* align-items: center; */
 }
 
-.answered-good {
-  background-color: var(--color-feedback-positive);
-}
-
-.answered-bad {
-  background-color: var(--color-feedback-negative);
+.answered {
+  background-color: var(--color-feedback-mutual);
 }
 
 .question-wrapper {
@@ -152,14 +158,15 @@ onUnmounted(() => {
 
 .comments {
   flex: auto;
-  flex-grow: 0;
-  flex-basis: 20%;
-  min-height: 3em;
-  width: 20% !important;
+  /* flex-grow: 0;
+  flex-basis: 20%; */
+  min-height: 2.7em;
+  height: 2.7em;
+  width: 100% !important;
 }
 
 @media (orientation: portrait) {
-  .check {
+  .check-content {
     flex-direction: column;
   }
 

@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import type { CheckYesNo } from '@/libraries/common'
+import { ref } from 'vue'
 
 defineProps<{
   data: CheckYesNo
 }>()
 
-defineEmits<{
+const answered = ref(false)
+const checked_yes = ref(false)
+
+const emit = defineEmits<{
   checked: [value: boolean]
   answered: [value: boolean]
 }>()
@@ -13,40 +17,42 @@ defineEmits<{
 function is_true(value: string) {
   return value.toLowerCase() == 'true'
 }
+
+function do_update(event: Event) {
+  answered.value = true
+  checked_yes.value = is_true((event.currentTarget as HTMLInputElement).value)
+  emit('checked', checked_yes.value)
+  emit('answered', true)
+}
 </script>
 
 <template>
   <div class="check-yes-no">
-    <div>
-      <input
+    <label
+      :for="`select-${data.id}-yes`"
+      :class="['answer', answered && checked_yes ? 'answered-yes' : '']"
+      ><input
         type="radio"
         :id="`select-${data.id}-yes`"
         :name="`select-${data.id}`"
         value="true"
-        @input="
-          (event) => {
-            $emit('checked', is_true((event.currentTarget as HTMLInputElement).value))
-            $emit('answered', true)
-          }
-        "
+        @input="do_update"
       />
-      <label :for="`select-${data.id}-yes`">Yes</label>
-    </div>
-    <div>
+      <span>Yes</span>
+    </label>
+    <label
+      :for="`select-${data.id}-no`"
+      :class="['answer', answered && !checked_yes ? 'answered-no' : '']"
+    >
       <input
         type="radio"
         :id="`select-${data.id}-no`"
         :name="`select-${data.id}`"
         value="false"
-        @input="
-          (event) => {
-            $emit('checked', is_true((event.currentTarget as HTMLInputElement).value))
-            $emit('answered', true)
-          }
-        "
+        @input="do_update"
       />
-      <label :for="`select-${data.id}-no`">No</label>
-    </div>
+      <span>No</span>
+    </label>
   </div>
 </template>
 
@@ -60,17 +66,32 @@ function is_true(value: string) {
 .check-yes-no > * {
   display: flex;
   flex: auto;
+  gap: 1ex;
   background-color: var(--color-background-mute);
   border-radius: 1ex;
+  padding: 0.5ex;
 }
 
-.check-yes-no > * > * {
-  flex: auto;
-  margin: 0.5ex;
-}
-
-.check-yes-no > * > *:first-child {
+.check-yes-no > input {
   flex-grow: 0;
+}
+
+.answer,
+.answer > * {
+  cursor: pointer;
+}
+
+.answered-yes > *,
+.answered-no > * {
+  font-weight: bold;
+}
+
+.answered-yes {
+  background-color: var(--color-feedback-positive);
+}
+
+.answered-no {
+  background-color: var(--color-feedback-negative);
 }
 
 @media (orientation: portrait) {

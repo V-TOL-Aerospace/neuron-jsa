@@ -6,7 +6,9 @@ import HomeView from './views/HomeView.vue'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" />
+    <a class="image-link" href="https://v-tol.com" target="_blank">
+      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" />
+    </a>
     <div class="wrapper"><div>Neuron JSA</div></div>
 
     <!-- <div class="wrapper">
@@ -21,6 +23,13 @@ import HomeView from './views/HomeView.vue'
 
   <!-- <RouterView /> -->
   <HomeView />
+  <footer>
+    <div>
+      <a href="https://v-tol.com" target="_blank">
+        © {{ new Date().getFullYear() }} V-TOL Aerospace</a
+      >
+    </div>
+  </footer>
 </template>
 
 <style scoped>
@@ -30,6 +39,25 @@ header {
   padding: 1rex;
   gap: 1rex;
   display: flex;
+}
+
+.image-link {
+  padding: 0;
+  margin: 0;
+}
+
+footer {
+  background-color: var(--vt-c-black-full);
+  color: var(--vt-c-text-dark-2);
+  gap: 1rex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+footer a {
+  color: var(--vt-c-text-dark-2);
+  padding: 0 1ex;
 }
 
 .logo {

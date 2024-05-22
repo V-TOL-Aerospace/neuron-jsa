@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import type { CheckSelection } from '@/libraries/common'
+import { ref } from 'vue'
 
 defineProps<{
   data: CheckSelection
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   checked: [value: boolean]
   answered: [value: boolean]
 }>()
+
+const complete = ref(false)
+
+function update_content(selected: boolean) {
+  complete.value = selected
+  emit('checked', selected)
+  emit('answered', selected)
+}
 </script>
 
 <template>
@@ -16,10 +25,10 @@ defineEmits<{
     <select
       :id="`select-${data.id}`"
       :name="`select-${data.id}`"
+      :class="complete ? 'check-complete' : ''"
       @input="
         (event) => {
-          $emit('checked', Boolean((event.currentTarget as HTMLInputElement).value))
-          $emit('answered', Boolean((event.currentTarget as HTMLInputElement).value))
+          update_content(Boolean((event.currentTarget as HTMLInputElement).value))
         }
       "
     >
@@ -34,5 +43,9 @@ defineEmits<{
 <style scoped>
 .check-selection > * {
   width: 100%;
+}
+
+.check-complete {
+  background-color: var(--color-feedback-positive);
 }
 </style>

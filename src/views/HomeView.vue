@@ -51,8 +51,8 @@ function meets_prereqs(prereqs: CheckPrerequisites) {
         :index="index"
         :data="item"
         @checked="
-          (_) => {
-            console.log(`Changed: ${item.id}`)
+          (value: boolean) => {
+            console.log(`Changed: ${item.id} => ${value}`)
             //Trigger update to get the v-for to recalculate
             $forceUpdate()
           }
