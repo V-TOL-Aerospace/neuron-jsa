@@ -2,6 +2,34 @@
 // import { RouterLink, RouterView } from 'vue-router'
 // import HelloWorld from './components/HelloWorld.vue'
 import HomeView from './views/HomeView.vue'
+
+function is_true(value: string) {
+  return value.toLowerCase() == 'true'
+}
+
+function go_to_next() {
+  const matches = document.querySelectorAll('[name^="check-"]') as NodeListOf<HTMLElement>
+  for (const item of matches) {
+    console.log(`${item.id} => ${item.dataset.checked}`)
+    if (!item.dataset.checked || !is_true(item.dataset.checked)) {
+      item.scrollIntoView(true)
+
+      // now account for fixed header
+      const scrolledY = window.scrollY
+      const header = document.getElementsByTagName('header')[0]
+      if (scrolledY && header) {
+        const gap = 10
+        window.scroll(0, scrolledY - header.offsetHeight - gap)
+      }
+
+      return
+    }
+  }
+
+  //Scroll to the bottom if all are done
+  console.log('All items checked')
+  window.scrollTo(0, document.body.scrollHeight)
+}
 </script>
 
 <template>
@@ -9,7 +37,9 @@ import HomeView from './views/HomeView.vue'
     <a class="image-link" href="https://v-tol.com" target="_blank">
       <img alt="Vue logo" class="logo" src="@/assets/logo.svg" />
     </a>
-    <div class="wrapper"><div>Neuron JSA</div></div>
+    <div class="wrapper">Neuron JSA</div>
+    <div class="wrapper spacer"></div>
+    <button class="wrapper" @click="(event) => go_to_next()">Next Item</button>
 
     <!-- <div class="wrapper">
       <HelloWorld msg="You did it!" />
@@ -39,6 +69,8 @@ header {
   padding: 1rex;
   gap: 1rex;
   display: flex;
+  position: sticky;
+  top: 0;
 }
 
 .image-link {
@@ -77,6 +109,23 @@ footer a {
 .wrapper > * {
   flex: auto;
   font-weight: bold;
+}
+
+button.wrapper {
+  background-color: var(--color-feedback-mutual);
+  font-weight: bold;
+  color: var(--color-text);
+  border: 0;
+  cursor: pointer;
+  padding: 0 1ex;
+}
+
+button.wrapper:hover {
+  background-color: var(--color-feedback-mutual-highlight);
+}
+
+.spacer {
+  flex-grow: 1;
 }
 
 nav {

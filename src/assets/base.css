@@ -1,8 +1,8 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  --vt-c-white-soft: #eaeaea;
+  --vt-c-white-mute: #e0e0e0;
 
   --vt-c-black: #181818;
   --vt-c-black-full: #000000;
@@ -36,6 +36,7 @@
 
   --color-feedback-positive: rgb(120, 220, 120);
   --color-feedback-mutual: rgb(120, 180, 220);
+  --color-feedback-mutual-highlight: rgb(140, 200, 240);
   --color-feedback-negative: rgb(220, 120, 120);
 
   --section-gap: 160px;
@@ -55,6 +56,7 @@
 
     --color-feedback-positive: rgb(40, 100, 40);
     --color-feedback-mutual: rgb(50, 60, 120);
+    --color-feedback-mutual-highlight: rgb(60, 70, 140);
     --color-feedback-negative: rgb(120, 50, 50);
   }
 }

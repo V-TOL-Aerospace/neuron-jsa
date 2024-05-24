@@ -50,6 +50,7 @@ function meets_prereqs(prereqs: CheckPrerequisites) {
         :id="item.id"
         :index="index"
         :data="item"
+        :name="`check-${index}`"
         @checked="
           (value: boolean) => {
             console.log(`Changed: ${item.id} => ${value}`)
